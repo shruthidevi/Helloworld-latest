@@ -1,5 +1,5 @@
 pipeline {
-    agent { label "agentA" }
+    agent { label "slave1" }
     
     triggers {
         pollSCM('* * * * *')
@@ -9,7 +9,7 @@ pipeline {
         stage('clone_project_A') {
             steps {
                 echo 'clone project A'
-                git 'https://github.com/vincloud2/Helloworld-latest.git'
+                git 'https://github.com/shruthidevi/Helloworld-latest.git'
             }
         }
         stage('build_project_A') {
@@ -21,39 +21,39 @@ pipeline {
         } 
         stage('Docker_build') {
             steps {
-                echo 'Docker build_projectd'
-                sh 'docker build -t projectd .' 
+                echo 'Docker build_projectabc'
+                sh 'docker build -t projectabc .' 
             }
         }
         stage('login to dockerhub') {
             steps {
                 echo 'login to dockerhub'
-                sh 'docker login -u vnom1985 -p abc@12345'
+                sh 'docker login -u shrushruthi -p shona@2018'
             }
         } 
         stage('Tag the Image') {
             steps {
                 echo 'Tag the Image'
-                sh 'docker tag  projectd vnom1985/projectd'
+                sh 'docker tag  projectabc shrushruthi/projectabc'
             }
         } 
         stage('Deploy to docker hub') {
             steps {
                 echo 'Deploy to docker hub'
-                sh 'docker push vnom1985/projectd'
+                sh 'docker push shrushruthi/projectabc'
             }
         }
         stage('Remove Docker conatiner') {
             steps {
                 echo 'Remove Docker conatiner'
-                sh 'docker stop projectd_conatiner || true'
-                sh 'docker rm projectdconatiner || true'
+                sh 'docker stop projectabc_conatiner || true'
+                sh 'docker rm projectabc_conatiner || true'
             }
         }        
         stage('Run docker image') {
             steps {
                 echo 'Deploy to docker hub'
-                sh 'docker run --name projectd_conatiner -d -p 8181:8080 vnom1985/projectd'
+                sh 'docker run --name projectabc_conatiner -d -p 8181:8080 shrushruthi/projectabc'
             }
         }        
     }
